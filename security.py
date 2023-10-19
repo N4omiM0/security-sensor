@@ -24,27 +24,27 @@ pir.direction = dio.Direction.INPUT
 sonar = adafruit_hcsr04.HCSR04(trigger_pin=board.D7, echo_pin=board.D8)
 
 armed = False
-
+'''This function sets the arming phase. The neopixels turn yellow for 10 seconds, then after,
+    the neopixels turn red and it is armed.'''
 def arm():
     global armed
-    np.fill(BLACK)
-    np.show()
-    time.sleep(0.5)
+    print("Arming")
     np.fill(YELLOW)
     np.show()
     time.sleep(10)
     np.fill(RED)
     np.show()
     armed = True
-    print(armed)
-
+    print("Armed")
+'''This function disarms the system. The noepixels turn green, and when the sensors are triggered,
+    nothing happens.'''
 def disarm():
     global armed
     np.fill(GREEN)
     np.show()
     armed = False
-    print(armed)
-
+    print("Disarmed")
+'''This is the trigger function. When the sensors are triggered, the neopixels blink red.'''
 def trigger():
     for i in range(10):
         np.fill(BLACK)
@@ -66,15 +66,16 @@ while True:
         disarm()
     if armed == True:
         if pir.value:
+            time.sleep(3)
             print("PIR Trigger")
             trigger()
-            time.sleep(0.5)
-        if distance >= 100:
+            time.sleep(1)
+        if distance >= 75:
             print("Sonar Trigger")
             trigger()
-            time.sleep(0.5)
+            time.sleep(1)
         if not bb.value:
             print("Break Beam Trigger")
             trigger()
-            time.sleep(0.5)
+            time.sleep(1)
 
